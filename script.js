@@ -1,45 +1,56 @@
-document.getElementById("myForm").addEventListener("submit", function (event) {
+document.getElementById("regexForm").addEventListener("submit", function (event) {
     event.preventDefault();
-
-    let name = document.getElementById("name").value.trim();
-    let email = document.getElementById("email").value.trim();
-    let phone = document.getElementById("phone").value.trim();
-
-    let nameError = document.getElementById("nameError");
-    let emailError = document.getElementById("emailError");
-    let phoneError = document.getElementById("phoneError");
-
-    nameError.textContent = "";
-    emailError.textContent = "";
-    phoneError.textContent = "";
 
     let isValid = true;
 
-    // Name validation (Only letters, min 3 characters)
-    let namePattern = /^[A-Za-z\s]{3,}$/;
-    if (!namePattern.test(name)) {
-        nameError.textContent = "Enter a valid name (at least 3 letters)";
+    // Regex Patterns
+    const namePattern = /^[A-Za-z\s]{3,}$/;
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const phonePattern = /^[6-9]\d{9}$/; // Indian mobile number format
+
+    // Input Fields
+    const nameInput = document.getElementById("name");
+    const emailInput = document.getElementById("email");
+    const phoneInput = document.getElementById("phone");
+
+    // Error Messages
+    const nameError = nameInput.nextElementSibling;
+    const emailError = emailInput.nextElementSibling;
+    const phoneError = phoneInput.nextElementSibling;
+
+    // Name Validation
+    if (!namePattern.test(nameInput.value.trim())) {
+        nameError.textContent = "Enter a valid name (only letters, min 3 characters)";
+        nameError.style.display = "block";
         isValid = false;
+    } else {
+        nameError.style.display = "none";
     }
 
-    // Email validation
-    let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!emailPattern.test(email)) {
+    // Email Validation
+    if (!emailPattern.test(emailInput.value.trim())) {
         emailError.textContent = "Enter a valid email address";
+        emailError.style.display = "block";
         isValid = false;
+    } else {
+        emailError.style.display = "none";
     }
 
-    // Phone number validation (10 digits)
-    let phonePattern = /^[6-9]\d{9}$/;
-    if (!phonePattern.test(phone)) {
+    // Phone Validation
+    if (!phonePattern.test(phoneInput.value.trim())) {
         phoneError.textContent = "Enter a valid 10-digit phone number";
+        phoneError.style.display = "block";
         isValid = false;
+    } else {
+        phoneError.style.display = "none";
     }
 
+    // If all fields are valid
     if (isValid) {
-        alert("Form submitted successfully!");
-        document.getElementById("myForm").reset();
+        document.getElementById("success-message").classList.remove("hidden");
+        setTimeout(() => {
+            document.getElementById("success-message").classList.add("hidden");
+            document.getElementById("regexForm").reset();
+        }, 3000);
     }
 });
-
-
